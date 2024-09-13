@@ -1,6 +1,9 @@
 # Mac Cruft 
 .DS_Store
 
+# Office 
+~*
+
 
 # Vim 
 *~
