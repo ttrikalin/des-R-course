@@ -1,3 +1,32 @@
+# Mac Cruft 
+.DS_Store
+
+
+# Vim 
+*~
+*.swp
+*.swo
+
+# Tex Cruft 
+*.aux 
+*.bit 
+*.blg 
+*.bbl 
+*.lof 
+*.log 
+*.lot 
+*.glo 
+*.glx 
+*.gxg 
+*.gxs 
+*.idx 
+*.ilg 
+*.ind 
+*.out 
+*.url 
+*.svn 
+*.toc
+
 # History files
 .Rhistory
 .Rapp.history
