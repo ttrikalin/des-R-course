@@ -3,16 +3,17 @@
 ################################################################################
 
 # Fernando Alarid-Escudero, PhD (1) 
-# Stavroula, PhD (2)
-# Tom Trikalinos, MD, PhD (3)
+# Yuliia Sereda, PhD (2)
+# Stavroula Chrysanthopoulou, PhD (3)
+# Tom Trikalinos, MD, PhD (2)
 
 # Affiliations: 		
 # 1 Department of Health Policy, School of Medicine, and Stanford Health Policy, 
 #   and Freeman-Spogli Institute for International Studies, Stanford University, 
 #   Stanford, California, USA
-# 2 Department of , School of Public Health, Brown University, 
+# 2 Department of Health Services, Policy and Practice, School of Public Health, Brown University, 
 #   Providence, Rhode Island, USA
-# 3 Department of , School of Public Health, Brown University, 
+# 3 Department of Biostatistics, School of Public Health, Brown University, 
 #   Providence, Rhode Island, USA
 ################################################################################
 
