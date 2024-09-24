@@ -105,3 +105,34 @@ dt_Pop[, Age_death := matrixStats::rowMins(cbind(Age_death_oc,
 dt_Pop[, Cause_of_death := fifelse(test = (Age_death == Age_death_oc),
                                    yes  = "Other",
                                    no   = "Cancer")]
+## 04.6 Got cancer ----
+dt_Pop[, Got_cancer := fifelse(test = (Age_to_cancer < Age_death),
+                                   yes  = TRUE,
+                                   no   = FALSE)]
+
+# 05 Compute outcomes ----
+## 05.1 Age of cancer onset ----
+dt_Pop[, Age_cancer_onset := fifelse(test = (Got_cancer),
+                                     yes  = Age_to_cancer,
+                                     no   = NaN)]
+dt_Pop[Age_cancer_onset > 0, 
+       .(`Age of cancer onset (years)` = mean(Age_cancer_onset), 
+         `% got cancer` = scales::percent(.N/n_i))]
+
+## 05.2 Sojourn time ----
+# Sojourn time is defined as the time spent in a preclinical state.
+
+# Calculate who gets diagnosed with cancer before dying from other causes
+dt_Pop[, Cancer_before_death := fifelse(test = (Age_to_diagnosis < Age_death),
+                                        yes  = TRUE,
+                                        no   = FALSE)]
+
+# Calculate time spent with cancer before getting diagnosed
+dt_Pop[, Time_with_preclinical_cancer := fifelse(test = (Cancer_before_death),
+                                                 yes  = Time_to_diagnosis,
+                                                 no   = NaN)]
+# Expected time spent with preclinical cancer on those who got cancer and got
+# diagnosed before dying 
+dt_Pop[Time_with_preclinical_cancer > 0, 
+       .(`Sojourn time (years)` = mean(Time_with_preclinical_cancer), 
+         `% got Dx cancer` = scales::percent(.N/n_i))]
