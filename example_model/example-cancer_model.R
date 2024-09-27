@@ -5,7 +5,7 @@
 # Fernando Alarid-Escudero, PhD (1) 
 # Yuliia Sereda, PhD (2)
 # Stavroula Chrysanthopoulou, PhD (3)
-# Tom Trikalinos, MD, PhD (2)
+# Tom Trikalinos, MD, PhD (2, 3)
 
 # Affiliations: 		
 # 1 Department of Health Policy, School of Medicine, and Stanford Health Policy, 
@@ -119,6 +119,8 @@ dt_Pop[, Age_cancer_onset := fifelse(test = (Got_cancer),
 dt_Pop[Age_cancer_onset > 0, 
        .(`Age of cancer onset (years)` = mean(Age_cancer_onset), 
          `% got cancer` = scales::percent(.N/n_i))]
+
+hist(dt_Pop[Age_cancer_onset > 0, Age_cancer_onset])
 
 ## 05.2 Sojourn time ----
 # Sojourn time is defined as the time spent in a preclinical state.
