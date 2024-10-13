@@ -24,8 +24,7 @@ library(nhppp)
 
 set.seed(1)                      # set the seed 
 
-# Model structure
-n_i <- 100000 # number of individuals
+N <- 100000 # number of individuals
 
 # Event hazards
 # Loosely based on https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2022.780917/full
