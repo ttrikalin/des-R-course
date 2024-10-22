@@ -16,7 +16,7 @@ ToyModel <- R6::R6Class(
     update = function(with_risk_factors, with_nhppp_package) {
       stopifnot(private$.simulation_erased)
       private$.generate_death_from_other_causes()
-      private$.generate_smoking_Hx()
+      private$.generate_toxin_Hx()
       private$.generate_cancers(with_risk_factors = with_risk_factors, with_nhppp_package = with_nhppp_package)
       private$.generate_death_from_cancer_causes()
       private$.simulation_erased <- FALSE 
@@ -26,7 +26,7 @@ ToyModel <- R6::R6Class(
     reset = function() {
       for (v in c("age_dead_from_other_causes", "age_cancer_emergence", 
                   "with_cancer", "age_dead_from_cancer_causes", "age_dead", 
-                  "smoking_start_age", "smoking_stop_age", "maximum_smoking_exposure")) {
+                  "toxin_start_age", "toxin_stop_age", "maximum_toxin_exposure")) {
         private$.population[, (v) := NULL]
       }  
       private$.simulation_erased <- TRUE
@@ -41,12 +41,12 @@ ToyModel <- R6::R6Class(
       }
     }, 
     
-    getSmokingExposureAtAge = function(t) {
-      generate_smoking_exposure(
+    getToxinExposureAtAge = function(t) {
+      generate_toxin_exposure(
         t=t, 
-        max_exposure = private$.population$maximum_smoking_exposure, 
-        start_age = private$.population$smoking_start_age, 
-        stop_age = private$.population$smoking_stop_age
+        max_exposure = private$.population$maximum_toxin_exposure, 
+        start_age = private$.population$toxin_start_age, 
+        stop_age = private$.population$toxin_stop_age
         )
     }
    
@@ -77,22 +77,22 @@ ToyModel <- R6::R6Class(
       invisible(self)
     },
     
-    .generate_smoking_Hx = function(){
+    .generate_toxin_Hx = function(){
       private$.population[, `:=`(
-          smoking_start_age = max_simulation_age, 
-          smoking_stop_age = max_simulation_age, 
-          maximum_smoking_exposure = 0)   
+          toxin_start_age = max_simulation_age, 
+          toxin_stop_age = max_simulation_age, 
+          maximum_toxin_exposure = 0)   
       ][, 
         ever_smoker := runif(.N) < 0.20  
       ][ever_smoker == TRUE, 
-        smoking_quitter := runif(.N) < 0.60  
+        toxin_quitter := runif(.N) < 0.60  
       ][ever_smoker == TRUE, 
-        smoking_start_age := pmin(runif(.N, 12, 35), age_dead_from_other_causes)
-      ][smoking_quitter == TRUE, 
-        smoking_stop_age := pmin(smoking_start_age + runif(.N, 1, 35), age_dead_from_other_causes)
+        toxin_start_age := pmin(runif(.N, 12, 35), age_dead_from_other_causes)
+      ][toxin_quitter == TRUE, 
+        toxin_stop_age := pmin(toxin_start_age + runif(.N, 1, 35), age_dead_from_other_causes)
       ][ever_smoker == TRUE, 
-        maximum_smoking_exposure := runif(.N, 1/5, 1) 
-      ][, ever_smoker := NULL][, smoking_quitter := NULL ]
+        maximum_toxin_exposure := runif(.N, 1/5, 1) 
+      ][, ever_smoker := NULL][, toxin_quitter := NULL ]
       
       invisible(self)
     },
@@ -103,8 +103,10 @@ ToyModel <- R6::R6Class(
         age_dead_from_other_causes := generate_death_from_other_causes(
           population = private$.population, 
           annual_mortality_rates = private$.annual_mortality_rates, 
-          range_t = c(0, 110), 
-          subinterval = as.matrix(private$.population[, .(spawn_age, max_simulation_age)])
+          rate_matrix_t_min = 0, 
+          rate_matrix_t_max = 110,
+          t_min = private$.population[, spawn_age],
+          t_max = private$.population[, max_simulation_age]
         )
       ]
       invisible(self)
@@ -149,7 +151,7 @@ ToyModel <- R6::R6Class(
         private$.generate_cancers_no_risk_factors_nhppp()
       }
       if(with_risk_factors && with_nhppp_package) {
-        private$.generate_cancers_with_smoking_nhppp()
+        private$.generate_cancers_with_toxin_nhppp()
       }
       if(with_risk_factors && !with_nhppp_package) {
         stop("Cancer generation with risk factors does not use the built-in Weibull implementation.")
@@ -200,34 +202,37 @@ ToyModel <- R6::R6Class(
       
        private$.population[, 
          age_cancer_emergence := 
-           nhppp::vdraw_intensity_step_regular_cpp(
+           nhppp::vdraw_intensity(
              lambda = l_, 
              lambda_args = params,
              lambda_maj_matrix = lambda_maj_matrix,
-             range_t = range_t,
-             subinterval = as.matrix(private$.population[,.(spawn_age, age_dead_from_other_causes)]),
-             atmost1 = TRUE,
-             atmostB = 5
+             rate_matrix_t_min = range_t[1],
+             rate_matrix_t_max = range_t[2],
+             t_min = private$.population[, spawn_age],
+             t_max = private$.population[, age_dead_from_other_causes],
+             atmost1 = TRUE
           )]
        invisible(self)
     }, 
     
-    .generate_cancers_with_smoking_nhppp = function() {
+    .generate_cancers_with_toxin_nhppp = function() {
       params <- private$.population[, 
         .(param_cancer_emergence_shape, param_cancer_emergence_scale, 
-          param_smoking_exposure_irr )]
+          param_toxin_exposure_irr )]
       
       l_ <- function(t, lambda_args = params){
-        lambda_weibull(t, 
+        return(
+          lambda_weibull(t, 
                        scale = lambda_args[,param_cancer_emergence_scale], 
                        shape = lambda_args[,param_cancer_emergence_shape]) + 
-          lambda_args[,param_smoking_exposure_irr] * self$getSmokingExposureAtAge(t)
+          lambda_args[,param_toxin_exposure_irr] * self$getToxinExposureAtAge(t)
+        )
       }
       
       range_t <- c(min(private$.population[,spawn_age]), max(private$.population[,max_simulation_age]))
       N <- nrow(private$.population)
       time_breaks <- matrix(
-        data = rep(x = seq(from = range_t[1], to = range_t[2], length.out = 11), each = N), 
+        data = rep(x = seq(from = range_t[1], to = range_t[2], length.out = 51), each = N), 
         byrow = FALSE, 
         nrow = N)
       
@@ -235,19 +240,21 @@ ToyModel <- R6::R6Class(
         fun = l_, 
         breaks = time_breaks, 
         is_monotone = FALSE, 
-        K = 1.9/4   # based on the smoking_exposure functions for max_exposure = 1
+        # based on the toxin_exposure functions for max_exposure = 1
+        K = max(private$.population$param_toxin_exposure_irr, na.rm = TRUE) * 1.9/4 
       )
       
       private$.population[, 
                           age_cancer_emergence := 
-                            nhppp::vdraw_intensity_step_regular_cpp(
+                            nhppp::vdraw_intensity(
                               lambda = l_, 
                               lambda_args = params,
                               lambda_maj_matrix = lambda_maj_matrix,
-                              range_t = range_t,
-                              subinterval = as.matrix(private$.population[,.(spawn_age, age_dead_from_other_causes)]),
-                              atmost1 = TRUE,
-                              atmostB = 5
+                              rate_matrix_t_min = range_t[1],
+                              rate_matrix_t_max = range_t[2],
+                              t_min = private$.population[,spawn_age],
+                              t_max = private$.population[,age_dead_from_other_causes],
+                              atmost1 = TRUE
                             )]
       invisible(self)
     }
