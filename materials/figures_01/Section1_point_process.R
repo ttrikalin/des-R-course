@@ -175,15 +175,38 @@ if(FALSE) ggsave("05_des.pdf", width = 5, height = 3)
 #########################################################################
 ############Chained ##############################################################
 
+age_doc <- 88
+age_cancer <- 62
+age_dx <- 80
+age_cancer_death <- 105
+
+p <- add_cancer_gen(p0 + ylim(0, 9), points = age_cancer, stop = age_cancer, y=5)
+p <- p + geom_segment(aes(x = age_cancer, xend = age_cancer, y= 5, yend = 4), linetype =2)
+p <- add_clinical_dx(p, start = age_cancer, stop = age_dx,  y=4)
+
+p
+if(FALSE) ggsave("06_des.pdf", width = 5, height = 3)
+
+###############################################################
+###############################################################
+### Parallel -- competeing 
+
 p <- add_trajectory(p0 + ylim(0, 9), 
-                    stop = 110, 
+                    stop = 100, 
                     point_at_stop = TRUE, 
                     text = "death (CVD)",
                     col = "red",
                     y=5)
+p <- add_trajectory(p, 
+                    stop = 68, 
+                    point_at_stop = TRUE, 
+                    text = "death (other)",
+                    col = "red",
+                    y=4)
 p
-if(FALSE) ggsave("04_des.pdf", width = 5, height = 3)
+if(FALSE) ggsave("07_des.pdf", width = 5, height = 3)
 
+##############################################################
 
 
 age_doc <- 88
@@ -191,14 +214,106 @@ age_cancer <- 62
 age_dx <- 80
 age_cancer_death <- 105
 
-
-##########################################################################
-##########################################################################
-##########################################################################
-
- p <- add_doc(p0 + ylim(0, 7), stop =age_doc, y=5)
- p <- add_cancer_gen(p, points = age_cancer, stop = age_cancer, y=4)
- p <- p + geom_segment(aes(x = age_cancer, xend = age_cancer, y= 4, yend = 2), linetype =2)
- p <- add_clinical_dx(p, start = age_cancer, stop = age_dx,  y=3)
- p <- add_cancer_death(p, start = age_cancer, stop = age_cancer_death,  y=2)
+p <- add_trajectory(p0 + ylim(0, 9), 
+                    stop = age_doc, 
+                    point_at_stop = TRUE, 
+                    text = "death (other)",
+                    col = "red",
+                    y=6)
+p <- add_cancer_gen(p, points = age_cancer, stop = age_cancer, y=5)
+p <- p + geom_segment(aes(x = age_cancer, xend = age_cancer, y= 5, yend = 3), linetype =2)
+p <- add_clinical_dx(p, start = age_cancer, stop = age_dx,  y=4)
+p <- add_cancer_death(p, start = age_cancer, stop = age_cancer_death,  y=3)
 p
+ggsave("08_des.pdf", width = 5, height = 3)
+
+##########################################################################
+##########################################################################
+##########################################################################
+
+age_doc <- 88
+age_cancer <- 62
+age_dx <- 80
+age_cancer_death <- 105
+
+ p <- add_doc(p0 + ylim(0, 9), stop =age_doc, y=6)
+ p <- add_cancer_gen(p, points = age_cancer, stop = age_cancer, y=5)
+ p <- p + geom_segment(aes(x = age_cancer, xend = age_cancer, y= 5, yend = 3), linetype =2)
+ p <- add_clinical_dx(p, start = age_cancer, stop = age_dx,  y=4)
+ p <- add_cancer_death(p, start = age_cancer, stop = age_cancer_death,  y=3)
+p
+
+if(FALSE) ggsave("09_des.pdf", width = 5, height = 3)
+
+##########################################################################
+##########################################################################
+##########################################################################
+
+age_doc <- 88
+age_cancer <- 62
+age_dx <- 80
+age_cancer_death <- 105
+
+p <- add_doc(p0 + ylim(0, 9), stop =age_doc, y=6)
+p <- add_cancer_gen(p, points = age_cancer, stop = age_cancer, y=5)
+p <- p + geom_segment(aes(x = age_cancer, xend = age_cancer, y= 5, yend = 3), linetype =2)
+p <- add_clinical_dx(p, start = age_cancer, stop = age_dx,  y=4)
+p <- add_trajectory(p, 
+                    start = age_cancer,
+                    stop = age_doc, 
+                    point_at_stop = FALSE, 
+                    text = "death (cancer)",
+                    col = "red",
+                    y=3)
+p
+
+if(FALSE) ggsave("10_des.pdf", width = 5, height = 3)
+
+
+
+
+
+##########################################################################
+##########################################################################
+
+age_doc <- 88
+ages_cancer <- c(62, 83)
+age_dx <- 80
+age_cancer_death <- 105
+
+p <- add_doc(p0 + ylim(0, 9), stop =age_doc, y=7)
+p <- add_trajectory(p, 
+                    stop = age_doc, 
+                    points = ages_cancer,
+                    text = "lesion emergence",
+                    col = "blue",
+                    y=6)
+p <- p + geom_segment(aes(x = ages_cancer[1], xend = ages_cancer[1], y= 6, yend = 3), linetype =2)
+p <- add_clinical_dx(p, start = ages_cancer[1], stop = age_dx,  y=5)
+p <- add_trajectory(p, 
+                    start = ages_cancer[1],
+                    stop = age_doc, 
+                    point_at_stop = FALSE, 
+                    text = "death (cancer)",
+                    col = "red",
+                    y=4) 
+p <- p + geom_segment(aes(x = ages_cancer[2], xend = ages_cancer[2], y= 6, yend = 2), linetype =2)
+p <- add_trajectory(p, 
+                    start = ages_cancer[2],
+                    stop = age_doc, 
+                    point_at_stop = FALSE, 
+                    text = "'clinical dx' (2nd cancer)",
+                    col = "red",
+                    y=3) 
+p <- add_trajectory(p, 
+                    start = ages_cancer[2],
+                    stop = age_doc, 
+                    point_at_stop = FALSE, 
+                    text = "death (2nd cancer)",
+                    col = "red",
+                    y=2) 
+p
+
+if(FALSE) ggsave("10_des.pdf", width = 5, height = 3)
+
+
