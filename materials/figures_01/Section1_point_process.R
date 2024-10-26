@@ -6,7 +6,7 @@ library(ggplot2)
 set.seed(20241011)
 
 breaks <- c(0, 40, 110)
-p0 <- ggplot() +
+base <- ggplot() +
   scale_x_continuous(limits = c(0, 110), breaks =breaks) +
   theme_bw() + 
   xlab("time")+
@@ -21,9 +21,15 @@ p0 <- ggplot() +
         panel.grid.minor.y = element_blank() )+
   theme(panel.border= element_blank())+
   theme(axis.line.x = element_line(color="black")) 
-p0
-
+base 
 if(FALSE) ggsave("00_des.pdf", width = 5, height = 3)
+
+dat <- data.table(x = 40:110)
+dat[,upper := 9][, lower := 0]
+p0 <- base + 
+  geom_ribbon(data = dat, aes(x = x,  ymin = lower, ymax = upper), fill = "orange", alpha  = .2) 
+p0 + ylim(0, 9)
+if(FALSE) ggsave("01_des.pdf", width = 5, height = 3)
 
 ###############################################################
 ###############################################################
@@ -33,12 +39,13 @@ add_trajectory <- function(p,
                            y = 1, 
                            start = 40, 
                            stop =110, 
-                           point_at_stop = TRUE,
+                           point_at_stop = FALSE,
                            col="black", 
                            points = NULL, 
                            text =NULL, 
                            text_dx = 2, 
                            shape = 21) {
+ # browser()
   if(is.null(stop)) {
     stop <- 110
     point_at_stop <- FALSE
@@ -51,10 +58,9 @@ add_trajectory <- function(p,
     geom_segment(aes(x = start, xend = stop, y = y, yend =y), color = col, linewidth = 2) 
   
   if(!is.null(points)) {
-    for(pp in points) {
-      res <- res + 
-        geom_point(aes(x = pp, y= y), size = 4, color = col, shape = shape, fill = "white")
-    }
+    tmp<- data.frame(x = points, y= rep(y, length(points)))  
+    res <- res + 
+        geom_point(data = tmp, aes(x = x, y= y), size = 4, color = col, shape = shape, fill = "white")
   }
   if(!is.null(text)){
     res <- res + 
@@ -115,9 +121,70 @@ add_cancer_death <- function(p, y = 1, start = 40, stop =110) {
                  shape =21) 
 }
 
+
 ##########################################################################
 ##########################################################################
 ##########################################################################
+# Exactly 1 event 
+
+p <- add_trajectory(p0 + ylim(0, 9), 
+                    stop = 88, 
+                    point_at_stop = TRUE, 
+                    text = "death",
+                    y=4.5)
+p
+if(FALSE) ggsave("02_des.pdf", width = 5, height = 3)
+
+##########################################################################
+##########################################################################
+##########################################################################
+# atmost 1 event -- occurs vs not 
+
+p <- add_trajectory(p0 + ylim(0, 9), 
+                    stop = 78, 
+                    point_at_stop = TRUE,
+                    text = "death (CVD)",
+                    col = "red",
+                    y=4.5)
+p
+if(FALSE) ggsave("03_des.pdf", width = 5, height = 3)
+
+
+p <- add_trajectory(p0 + ylim(0, 9), 
+                    stop = 110, 
+                    point_at_stop = TRUE, 
+                    text = "death (CVD)",
+                    col = "red",
+                    y=4.5)
+p
+if(FALSE) ggsave("04_des.pdf", width = 5, height = 3)
+##########################################################################
+##########################################################################
+##########################################################################
+
+# 0, 1, or more events 
+p <- add_trajectory(p0 + ylim(0, 9), 
+                    stop = 110, 
+                    points = c(55, 68),
+                    text = "lesion emergence",
+                    col = "blue",
+                    y=4.5)
+p
+if(FALSE) ggsave("05_des.pdf", width = 5, height = 3)
+
+#########################################################################
+############Chained ##############################################################
+
+p <- add_trajectory(p0 + ylim(0, 9), 
+                    stop = 110, 
+                    point_at_stop = TRUE, 
+                    text = "death (CVD)",
+                    col = "red",
+                    y=5)
+p
+if(FALSE) ggsave("04_des.pdf", width = 5, height = 3)
+
+
 
 age_doc <- 88
 age_cancer <- 62

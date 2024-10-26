@@ -1,6 +1,7 @@
 ########
 #######
 
+library(nhppp)
 
 draw_from_constant_intensity <- function(lambda, t_min, t_max, atmost1 = FALSE){
   times <- c()
@@ -25,9 +26,12 @@ draw_from_constant_intensity <- function(lambda, t_min, t_max, atmost1 = FALSE){
 ###  draw death from other causes 
 ### 
 set.seed(20241026)
-age_dead_from_other_causes <- draw_from_constant_intensity(lambda = 1/70, t_min = 40, t_max = 110, atmost1 = TRUE)
+age_dead_from_other_causes <- 
+  draw_from_constant_intensity(lambda = 1/70, 
+                               t_min = 40,
+                               t_max = 110, 
+                               atmost1 = TRUE)
 
-##
 ##  draw tumor emergence  
 
 age_tumor_emergence <- draw_from_constant_intensity(lambda = 1/40, 
