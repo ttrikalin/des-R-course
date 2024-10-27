@@ -47,6 +47,32 @@ draw(lambda = l_constant,
      atmost1 = FALSE, 
      atleast1 = FALSE)   
 
+###########################################################
+# piecewise constant intensity -- built in dataset from HMD
+###########################################################
+
+annual_mortality_rates_2015[
+  sex %in% c("male", "female"),
+  c(1:5, 111:113)
+]
+
+annual_mortality_rates_2015[sex=="female", 3:113] |> 
+  unlist() -> l_stepwise
+names(l_stepwise) <- NULL
+
+baseplot + ylim(0, .625) + ylab("intensity") + ggtitle("Stepwise (HMD)") +
+  geom_step(data = data.frame(x = 0:110, y=l_stepwise),
+            aes(x, y), 
+            direction = "vh", col = "red")
+
+draw_sc_step_regular(
+  lambda_vector = l_stepwise[20:110],
+  t_min = 20, 
+  t_max = 110,
+  atmost1 = TRUE,
+  atleast1 = TRUE)
+
+
 ########################################################
 # Weibull intensity 
 ########################################################

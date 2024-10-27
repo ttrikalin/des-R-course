@@ -1,9 +1,5 @@
 ## ----include = FALSE----------------------------------------------------------
 set.seed(20241017)
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
 K <- 10^4
 
 ## ----setup--------------------------------------------------------------------
@@ -16,20 +12,14 @@ pop <- data.table(
   birth_cohort = 2015,
   spawn_age = 40,
   max_simulation_age = 110,
-  sex = sample(c("male", "female"), K, replace = TRUE)
+  sex = sample(c("male", "female"), K, replace = TRUE),
+  param_cancer_emergence_shape = runif(K, 7, 9),
+  param_cancer_emergence_scale = rnorm(K, 150, 20),
+  param_toxin_exposure_diff = pmax(0.005, rnorm(K, 0.01, 0.005)),
+  param_cancer_death_intercept = rnorm(K, -2, 0.5),
+  param_cancer_death_slope = runif(K, 0, 0.003),
+  param_clinical_cancer_dx_rate = runif(K, 0.20, 0.27)
 )
-
-## It would make sense to execute the commented-out code now.
-## It generates model parameters used in later stages.
-## For expository clarity, we generate each parameter when it is introduced
-# pop[, `:=`(
-#    param_cancer_emergence_shape = runif(.N, 7, 9),
-#    param_cancer_emergence_scale = rnorm(.N, 150, 20),
-#    param_toxin_exposure_diff = pmax(0.005, rnorm(.N, 0.01, 0.005)),
-#    param_cancer_death_intercept := rnorm(.N, -2, 0.5),
-#    param_cancer_death_slope := runif(n= .N, min = 0, max = 0.003),
-#    param_clinical_cancer_dx_rate := runif(.N, 0.20, 0.27)
-#  )]
 
 ## ----rho----------------------------------------------------------------------
 annual_mortality_rates_2015[
@@ -57,7 +47,7 @@ pop[
       lambda_matrix = rho_matrix,
       rate_matrix_t_min = 0,
       rate_matrix_t_max = 110,
-      t_min = pop$spawn_age, # 40
+      t_min = pop$spawn_age,          # 40
       t_max = pop$max_simulation_age, # 110
       atmost1 = TRUE,
       atleast1 = TRUE
@@ -97,14 +87,6 @@ xi <- toxin_exposure <- function(t, max_exposure, start_age, stop_age) {
   (start_age <= t) * (stop_age >= 1) * max_exposure * (1 / 2 + (cos(t / 2) + cos(0.9 * t / 2)) / 4)
 }
 
-## ----params_cancer_generation-------------------------------------------------
-pop[, `:=`(
-  param_cancer_emergence_shape = runif(.N, 7, 9),
-  param_cancer_emergence_scale = rnorm(.N, 150, 20)
-)]
-
-## ----delta_k------------------------------------------------------------------
-pop[, param_toxin_exposure_diff := pmax(0, rnorm(.N, 0.01, 0.005))]
 
 ## ----cancer_generation--------------------------------------------------------
 lambda <- function(t, P = pop, ...) {
@@ -137,7 +119,7 @@ lambda_star <- nhppp::get_step_majorizer(
   fun = lambda,
   breaks = time_breaks,
   is_monotone = FALSE,
-  K = 1.9 / 4 # This is the maximum slope of xi() -- which you get with some calculus
+  K = 1.9 / 8 # This is an upper boundslope of xi() -- which you get with some calculus
 )
 
 lambda_star[1:3, ]
@@ -158,10 +140,6 @@ pop[
   ,
   with_cancer := !is.na(age_cancer_emergence),
 ]
-
-## ----params_cancer_death------------------------------------------------------
-pop[, param_cancer_death_intercept := rnorm(.N, -3, 0.2)]
-pop[, param_cancer_death_slope := runif(.N, 0, 0.003)]
 
 ## ----Nu-----------------------------------------------------------------------
 Nu <- function(t, Lambda_args = list(population), ...) {
@@ -208,28 +186,6 @@ pop[
   )
 ]
 
-## ----param_cancer_dx_rates----------------------------------------------------
-pop[
-  !is.na(age_cancer_emergence),
-  param_clinical_cancer_dx_rate := runif(.N, 0.20, 0.27)
-]
-
-## ----rexp---------------------------------------------------------------------
-### Using rexp()
-tictoc::tic()
-pop[
-  !is.na(age_cancer_emergence),
-  age_clinical_cancer_dx :=
-    age_cancer_emergence +
-    rexp(.N, rate = param_clinical_cancer_dx_rate)
-]
-pop[
-  age_clinical_cancer_dx >= age_dead,
-  age_clinical_cancer_dx := NA
-]
-tictoc::toc()
-
-## ----cancer_dx_rates----------------------------------------------------------
 tictoc::tic()
 mu_mat <- as.matrix(pop[
   !is.na(age_cancer_emergence),
@@ -245,7 +201,6 @@ pop[
     atmost1 = TRUE
   )
 ]
-tictoc::toc()
 
 ## ----descriptives-------------------------------------------------------------
 # pop$age_cancer_emergence |> summary()
