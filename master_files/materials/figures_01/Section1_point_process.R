@@ -39,24 +39,26 @@ add_trajectory <- function(p,
                            y = 1, 
                            start = 40, 
                            stop =110, 
-                           point_at_stop = FALSE,
+                           atmost1 = TRUE, 
+                           points = NULL,
                            col="black", 
-                           points = NULL, 
                            text =NULL, 
                            text_dx = 2, 
                            shape = 21) {
- # browser()
-  if(is.null(stop)) {
-    stop <- 110
-    point_at_stop <- FALSE
-  }
-  if(point_at_stop) {
-    points <- sort(unique(c(points, stop)))
-    points <- points[points<110]
-  }
-  res <- p+
-    geom_segment(aes(x = start, xend = stop, y = y, yend =y), color = col, linewidth = 2) 
+
   
+  if(!atmost1) trackwidth = 2 else trackwidth = 1
+  res <- p+
+    geom_segment(aes(x = start, xend = stop, y = y, yend =y), color = col, linewidth = trackwidth) 
+  
+  if(atmost1 & length(points)!=0){
+    res <- res+
+      geom_segment(aes(x = start, xend = points[1], y = y, yend =y), color = col, linewidth = 2) 
+  }
+  if(atmost1 & length(points)==0){
+    res <- res+
+      geom_segment(aes(x = start, xend = stop, y = y, yend =y), color = col, linewidth = 2) 
+  }
   if(!is.null(points)) {
     tmp<- data.frame(x = points, y= rep(y, length(points)))  
     res <- res + 
@@ -68,22 +70,20 @@ add_trajectory <- function(p,
   }
   return(res)
 }
-add_doc <- function(p, y = 1, start = 40, stop =110) {
+add_doc <- function(p, y = 1, start = 40, stop =110, points= NULL) {
     add_trajectory(p=p, 
                    y = y, 
                    start = start, 
-                   stop =stop, 
-                   point_at_stop = TRUE,
+                   stop = stop, 
+                   points = points,
+                   atmost1 = TRUE,
                    col="black", 
-                   points = stop, 
                    text = "death (other)") 
 }
 
 
-add_cancer_gen <- function(p, y = 1, start = 40, stop = 110,  point_at_stop = TRUE, points = NULL) {
-  #browser()
-  #n <- length(points)
-  if(stop <110) {
+add_cancer_gen <- function(p, y = 1, start = 40, stop = 110, atmost1 = TRUE, points = NULL) {
+  if(atmost1) {
     col <- "red"
   } else {
     col <- "blue"
@@ -93,30 +93,32 @@ add_cancer_gen <- function(p, y = 1, start = 40, stop = 110,  point_at_stop = TR
                  y = y, 
                  start = start, 
                  stop = stop,
+                 atmost1 = atmost1,
                  col=col, 
                  points = points, 
                  text = "cancer emergence", 
                  shape =21) 
 }
 
-add_clinical_dx <- function(p, y = 1, start = 40, stop =110) {
+add_clinical_dx <- function(p, y = 1, start = 40, stop =110, points = NULL) {
     add_trajectory(p=p, 
                    y = y, 
                    start = start, 
-                   stop =stop, 
+                   stop =stop,
+                   atmost1 = TRUE, 
                    col="red", 
-                   points = stop, 
+                   points = points, 
                    text = "clinical dx", 
                    shape =21) 
 }
-
-add_cancer_death <- function(p, y = 1, start = 40, stop =110) {
+add_cancer_death <- function(p, y = 1, start = 40, stop =110, points = NULL) {
   add_trajectory(p=p, 
                  y = y, 
                  start = start, 
                  stop =stop, 
+                 atmost1 = TRUE,
                  col="red", 
-                 points = stop, 
+                 points = points, 
                  text = "death (cancer)", 
                  shape =21) 
 }
@@ -128,8 +130,10 @@ add_cancer_death <- function(p, y = 1, start = 40, stop =110) {
 # Exactly 1 event 
 
 p <- add_trajectory(p0 + ylim(0, 9), 
-                    stop = 88, 
-                    point_at_stop = TRUE, 
+                    start = 40,
+                    stop = 110, 
+                    atmost1 = TRUE, 
+                    points = 88, 
                     text = "death",
                     y=4.5)
 p
@@ -141,8 +145,9 @@ if(FALSE) ggsave("02_des.pdf", width = 5, height = 3)
 # atmost 1 event -- occurs vs not 
 
 p <- add_trajectory(p0 + ylim(0, 9), 
-                    stop = 78, 
-                    point_at_stop = TRUE,
+                    stop = 110, 
+                    points = 78,
+                    atmost1 = TRUE,
                     text = "death (CVD)",
                     col = "red",
                     y=4.5)
@@ -152,7 +157,7 @@ if(FALSE) ggsave("03_des.pdf", width = 5, height = 3)
 
 p <- add_trajectory(p0 + ylim(0, 9), 
                     stop = 110, 
-                    point_at_stop = TRUE, 
+                    point = NULL, 
                     text = "death (CVD)",
                     col = "red",
                     y=4.5)
@@ -165,6 +170,7 @@ if(FALSE) ggsave("04_des.pdf", width = 5, height = 3)
 # 0, 1, or more events 
 p <- add_trajectory(p0 + ylim(0, 9), 
                     stop = 110, 
+                    atmost1 = FALSE,
                     points = c(55, 68),
                     text = "lesion emergence",
                     col = "blue",
@@ -180,9 +186,9 @@ age_cancer <- 62
 age_dx <- 80
 age_cancer_death <- 105
 
-p <- add_cancer_gen(p0 + ylim(0, 9), points = age_cancer, stop = age_cancer, y=5)
+p <- add_cancer_gen(p0 + ylim(0, 9), points = age_cancer, stop = 110, y=5)
 p <- p + geom_segment(aes(x = age_cancer, xend = age_cancer, y= 5, yend = 4), linetype =2)
-p <- add_clinical_dx(p, start = age_cancer, stop = age_dx,  y=4)
+p <- add_clinical_dx(p, start = age_cancer, stop = 110, points=age_dx, y=4)
 
 p
 if(FALSE) ggsave("06_des.pdf", width = 5, height = 3)
@@ -192,14 +198,16 @@ if(FALSE) ggsave("06_des.pdf", width = 5, height = 3)
 ### Parallel -- competeing 
 
 p <- add_trajectory(p0 + ylim(0, 9), 
-                    stop = 100, 
-                    point_at_stop = TRUE, 
+                    stop = 110, 
+                    points = 100,
+                    atmost1 = TRUE, 
                     text = "death (CVD)",
                     col = "red",
                     y=5)
 p <- add_trajectory(p, 
-                    stop = 68, 
-                    point_at_stop = TRUE, 
+                    points = 68, 
+                    stop = 110,
+                    atmost1 =  TRUE, 
                     text = "death (other)",
                     col = "red",
                     y=4)
@@ -215,15 +223,15 @@ age_dx <- 80
 age_cancer_death <- 105
 
 p <- add_trajectory(p0 + ylim(0, 9), 
-                    stop = age_doc, 
-                    point_at_stop = TRUE, 
+                    points = age_doc, 
+                    atmost1 = TRUE, 
                     text = "death (other)",
                     col = "red",
                     y=6)
-p <- add_cancer_gen(p, points = age_cancer, stop = age_cancer, y=5)
-p <- p + geom_segment(aes(x = age_cancer, xend = age_cancer, y= 5, yend = 3), linetype =2)
-p <- add_clinical_dx(p, start = age_cancer, stop = age_dx,  y=4)
-p <- add_cancer_death(p, start = age_cancer, stop = age_cancer_death,  y=3)
+p <- add_cancer_gen(p, points = age_cancer,atmost1=T, stop =110, y=5)
+p <- p + geom_segment(aes(x = age_cancer,  xend = age_cancer, y= 5, yend = 3), linetype =2)
+p <- add_clinical_dx(p, start = age_cancer, stop =110, points = age_dx,  y=4)
+p <- add_cancer_death(p, start = age_cancer, stop =110, points = age_cancer_death,  y=3)
 p
 ggsave("08_des.pdf", width = 5, height = 3)
 
@@ -236,12 +244,13 @@ age_cancer <- 62
 age_dx <- 80
 age_cancer_death <- 105
 
- p <- add_doc(p0 + ylim(0, 9), stop =age_doc, y=6)
- p <- add_cancer_gen(p, points = age_cancer, stop = age_cancer, y=5)
- p <- p + geom_segment(aes(x = age_cancer, xend = age_cancer, y= 5, yend = 3), linetype =2)
- p <- add_clinical_dx(p, start = age_cancer, stop = age_dx,  y=4)
- p <- add_cancer_death(p, start = age_cancer, stop = age_cancer_death,  y=3)
-p
+ p <- add_doc(p0 + ylim(0, 9), points =age_doc, stop = 110, y=6)
+ p <- add_cancer_gen(p, points = age_cancer,atmost1=T, stop =110, y=5)
+ p <- p + geom_segment(aes(x = age_cancer,  xend = age_cancer, y= 5, yend = 3), linetype =2)
+ p <- add_clinical_dx(p, start = age_cancer, stop =110, points = age_dx,  y=4)
+ p <- add_cancer_death(p, start = age_cancer, stop =110, points = age_cancer_death,  y=3)
+ p
+ p
 
 if(FALSE) ggsave("09_des.pdf", width = 5, height = 3)
 
@@ -254,14 +263,14 @@ age_cancer <- 62
 age_dx <- 80
 age_cancer_death <- 105
 
-p <- add_doc(p0 + ylim(0, 9), stop =age_doc, y=6)
-p <- add_cancer_gen(p, points = age_cancer, stop = age_cancer, y=5)
+p <- add_doc(p0 + ylim(0, 9), points =age_doc, stop =110, y=6)
+p <- add_cancer_gen(p, points = age_cancer,  stop = age_doc, y=5)
 p <- p + geom_segment(aes(x = age_cancer, xend = age_cancer, y= 5, yend = 3), linetype =2)
-p <- add_clinical_dx(p, start = age_cancer, stop = age_dx,  y=4)
+p <- add_clinical_dx(p, start = age_cancer, points = age_dx,stop = age_doc,  y=4)
 p <- add_trajectory(p, 
                     start = age_cancer,
                     stop = age_doc, 
-                    point_at_stop = FALSE, 
+                    points = NULL, 
                     text = "death (cancer)",
                     col = "red",
                     y=3)
@@ -281,19 +290,20 @@ ages_cancer <- c(62, 83)
 age_dx <- 80
 age_cancer_death <- 105
 
-p <- add_doc(p0 + ylim(0, 9), stop =age_doc, y=7)
+p <- add_doc(p0 + ylim(0, 9), points =age_doc, stop=110, y=7)
 p <- add_trajectory(p, 
                     stop = age_doc, 
                     points = ages_cancer,
+                    atmost1 = FALSE, 
                     text = "lesion emergence",
                     col = "blue",
                     y=6)
-p <- p + geom_segment(aes(x = ages_cancer[1], xend = ages_cancer[1], y= 6, yend = 3), linetype =2)
-p <- add_clinical_dx(p, start = ages_cancer[1], stop = age_dx,  y=5)
+p <- p + geom_segment(aes(x = ages_cancer[1], xend = ages_cancer[1], y= 6, yend = 4), linetype =2)
+p <- add_clinical_dx(p, start = ages_cancer[1], points = age_dx, stop = age_doc,  y=5)
 p <- add_trajectory(p, 
                     start = ages_cancer[1],
                     stop = age_doc, 
-                    point_at_stop = FALSE, 
+                    points = NULL, 
                     text = "death (cancer)",
                     col = "red",
                     y=4) 
@@ -301,19 +311,19 @@ p <- p + geom_segment(aes(x = ages_cancer[2], xend = ages_cancer[2], y= 6, yend 
 p <- add_trajectory(p, 
                     start = ages_cancer[2],
                     stop = age_doc, 
-                    point_at_stop = FALSE, 
+                    points = NULL, 
                     text = "'clinical dx' (2nd cancer)",
                     col = "red",
                     y=3) 
 p <- add_trajectory(p, 
                     start = ages_cancer[2],
                     stop = age_doc, 
-                    point_at_stop = FALSE, 
+                    points = NULL, 
                     text = "death (2nd cancer)",
                     col = "red",
                     y=2) 
 p
 
-if(FALSE) ggsave("10_des.pdf", width = 5, height = 3)
+if(FALSE) ggsave("11_des.pdf", width = 5, height = 3)
 
 
