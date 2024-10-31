@@ -3,6 +3,8 @@ library(data.table)
 library(nhppp)
 library(ggplot2)
 
+re_draw_all <- FALSE
+
 set.seed(20241011)
 times <- list()
 
@@ -39,17 +41,17 @@ p <- ggplot() +
   theme(axis.line.x = element_line(color="black")) 
   
 p
-if(FALSE) ggsave("00_point_process.pdf", width = 5, height = 3)
+if(FALSE | re_draw_all) ggsave("00_point_process.pdf", width = 5, height = 3)
 
 
 p + geom_point( aes( x= times$t1, y=times$y))
-if(F) ggsave("01_point_process.pdf", width = 5, height = 3)
+if(FALSE) ggsave("01_point_process.pdf", width = 5, height = 3)
 
 p + geom_point(aes( x= times$t2, y=times$y))
-if(F) ggsave("02_point_process.pdf", width = 5, height = 3)
+if(FALSE | re_draw_all) ggsave("02_point_process.pdf", width = 5, height = 3)
 
 p + geom_point(aes( x= times$t5, y=times$y))
-if(F) ggsave("03_point_process.pdf", width = 5, height = 3)
+if(FALSE | re_draw_all) ggsave("03_point_process.pdf", width = 5, height = 3)
 
 
 #### event times for five instantiations 
@@ -64,7 +66,7 @@ p +
   geom_point(aes( x= times$t5, y=times$y-dy)) + 
   geom_segment(aes(x = 1, xend = 5, y =1-2*dy, yend = 1-2*dy), color = "grey", linewidth = 0.5) +
   geom_point(aes( x= times$t3, y=times$y-2*dy))
-if(F) ggsave("04_point_process.pdf", width = 5, height = 3)
+if(F | re_draw_all) ggsave("04_point_process.pdf", width = 5, height = 3)
 
 
 dat <- times
@@ -97,7 +99,7 @@ p2 + ylim(0, 0.5) +
                  fill = "gray", 
                  binwidth = 0.05, 
                  center=0.025)
-if(T) ggsave("05_point_process.pdf", width = 5, height = 3)
+if(FALSE | re_draw_all) ggsave("05_point_process.pdf", width = 5, height = 3)
 
 
 p2 + ylim(0, 0.5) +
@@ -106,7 +108,7 @@ p2 + ylim(0, 0.5) +
                  fill = "gray", 
                  binwidth = 0.05, 
                  center=0.025)
-if(T) ggsave("06_point_process.pdf", width = 5, height = 3)
+if(FALSE | re_draw_all) ggsave("06_point_process.pdf", width = 5, height = 3)
 
 p2 + ylim(0, 0.5) +
   geom_histogram(aes(x = dat$times[1:10000], y=..density..), 
@@ -114,7 +116,7 @@ p2 + ylim(0, 0.5) +
                  fill = "gray", 
                  binwidth = 0.05, 
                  center=0.025)
-if(T) ggsave("07_point_process.pdf", width = 5, height = 3)
+if(FALSE | re_draw_all) ggsave("07_point_process.pdf", width = 5, height = 3)
 
 p2 + ylim(0, 0.5) +
   geom_histogram(aes(x = dat$times[1:10000], y=..density..), 
@@ -125,7 +127,7 @@ p2 + ylim(0, 0.5) +
   geom_segment(aes(x = 1, xend = 5, y = 1/4, yend = 1/4), color = "red", linewidth = 1) + 
   geom_segment(aes(x = 0, xend = 1, y = 0, yend = 0), color = "red", linewidth = 1)
 
-if(T) ggsave("08_point_process.pdf", width = 5, height = 3)
+if(FALSE | re_draw_all) ggsave("08_point_process.pdf", width = 5, height = 3)
 
 
 
@@ -139,7 +141,7 @@ p2 + ylim(0, 1) +
   geom_segment(aes(x = 1, xend = 5, y = 1/4, yend = 1/4), color = "red", linewidth = 1) + 
   geom_segment(aes(x = 0, xend = 1, y = 0, yend = 0), color = "red", linewidth = 1)
 
-if(T) ggsave("09_point_process.pdf", width = 5, height = 3)
+if(FALSE | re_draw_all) ggsave("09_point_process.pdf", width = 5, height = 3)
 
 
 p2 + ylim(0, 1) + 
@@ -149,7 +151,7 @@ p2 + ylim(0, 1) +
                  binwidth = 0.05, 
                  center=0.025) 
 
-if(T) ggsave("10_point_process.pdf", width = 5, height = 3)
+if(FALSE | re_draw_all) ggsave("10_point_process.pdf", width = 5, height = 3)
 
 ##################### loglinear ############################
 
@@ -180,7 +182,7 @@ p2 +
                  binwidth = 0.05, 
                  center=0.025) 
 
-if(T) ggsave("12_point_process.pdf", width = 5, height = 3)
+if(FALSE | re_draw_all) ggsave("12_point_process.pdf", width = 5, height = 3)
 
 dat_long <- melt(data = dat, value.name = "V", measure.vars = 1:ncol(Z))
 dat_long <- dat_long[!is.na(V),]
@@ -192,7 +194,7 @@ p2 +
                  binwidth = 0.05, 
                  center=0.025) 
 
-if(T) ggsave("11_point_process.pdf", width = 5, height = 3)
+if(FALSE | re_draw_all) ggsave("11_point_process.pdf", width = 5, height = 3)
 
 
 ########################### lambda and Lambda 
@@ -217,13 +219,24 @@ p3 <- ggplot() +
 p3 + ylim(0, 5) + ylab("intensity") +
   geom_segment(aes(x = 0, xend = 1, y =0, yend = 0), color = "red", linewidth = 1) + 
   geom_segment(aes(x = 1, xend = 5, y =1, yend = 1), color = "red", linewidth = 1)
-if(T) ggsave("13_point_process.pdf", width = 5, height = 3)
+if(FALSE | re_draw_all) ggsave("13_point_process.pdf", width = 5, height = 3)
 
 
 p3 + ylim(0, 5) + ylab("cumulative intensity") +
   geom_segment(aes(x = 0, xend = 1, y =0, yend = 0), color = "red", linewidth = 1) + 
   stat_function(fun = function(x) x - 1, color = "red", linewidth = 1)
-if(T) ggsave("14_point_process.pdf", width = 5, height = 3)
+if(FALSE | re_draw_all) ggsave("14_point_process.pdf", width = 5, height = 3)
+
+
+p3 + ylim(0, 5) + ylab("intensity") +
+  geom_segment(aes(x = 0, xend = 1, y =0, yend = 0), color = "red", linewidth = 1) + 
+  geom_segment(aes(x = 1, xend = 5, y =1, yend = 1), color = "red", linewidth = 1) + 
+  stat_function(fun = function(x) 1, geom= "area", xlim=c(2.3, 3.6), fill = "red",alpha = 0.3)
+if(FALSE | re_draw_all) ggsave("15_point_process.pdf", width = 5, height = 3)
+
+p3 + ylim(0, 5) + xlab("cumulative intensity") + ylab("time") + 
+  stat_function(fun = function(x) x + 1, color = "red", linewidth = 1)
+if(FALSE | re_draw_all) ggsave("16_point_process.pdf", width = 5, height = 3)
 
 
 
