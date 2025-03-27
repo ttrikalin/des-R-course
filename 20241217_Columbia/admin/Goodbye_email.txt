@@ -4,7 +4,7 @@ Thank you for participating in the Advanced Discrete Event Simulation in R short
 
 The final materials are accessible 
 	•	Through this Dropbox link (full link in the PS) through 17/01/2025. Password "columbia_2024", without the quotation marks. 
-	•	At https://github.com/ttrikalin/des-R-course (download the 2024_columbia release). See the attached "Instructions.pdf" for download instructions.
+	•	At https://github.com/ttrikalin/des-R-course (download the 2024_columbia_nyc release). See the attached "Instructions.pdf" for download instructions.
 
 This is joint work with Fernando Alarid-Escudero at Stanford and Yuliia Sereda and Stavroula Chrysanthopoulou at Brown. 
 

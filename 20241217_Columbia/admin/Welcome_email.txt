@@ -13,7 +13,7 @@ If you want to follow the exercises in real time,
 
 Starting on the morning of 16/12/2024, all materials will be accessible 
 	•	through this Dropbox link (full link in the PS) through 17/01/2025. Password "columbia_2024", without the quotation marks. 
-	•	at https://github.com/ttrikalin/des-R-course (download the 2024_columbia release)
+	•	at https://github.com/ttrikalin/des-R-course (download the 2024_columbia_nyc release)
 
 Thanks once more for hosting me -- and looking forward to meeting you all.
 
