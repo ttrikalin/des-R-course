@@ -1,27 +1,21 @@
-From: Thomas Trikalinos <ttrikalin@icloud.com>
-Subject: SMDM 2024: Advanced Discrete Event Simulation in R short course - welcome
-Date: October 26, 2024 at 8:33:45 AM EDT
-To: Thomas Trikalinos <thomas_trikalinos@brown.edu>
-Cc: Yuliia Sereda <yuliia.sereda@cascades.online>, Fernando Alarid Escudero <falarid@stanford.edu>, "Chrysanthopoulou, Stavroula" <stavroula_chrysanthopoulou@brown.edu>
-Bcc: enakpan1@sheffield.ac.uk, carolina.carula@gmail.com, gcupples@bccrc.ca, jacopo.disilvestre@hotmail.com, Shaun Forbes <shaun_forbes@brown.edu>, vic.granados@gmail.com, dwhutton@umich.edu, neetik@umich.edu, yunfeili@mail.harvard.edu, Zongbo Li <li001932@umn.edu>, masy0318@hotmail.com, jmay@uwaterloo.ca, andrew.messali@alexion.com, wmamohammed1@sheffield.ac.uk, grace.ratcliff.2@vumc.org, Joshua Salomon <salomon1@stanford.edu>, ye_shen@fas.harvard.edu, dorittalia@gmail.com, myu@advancinghealth.ubc.ca, yeji.ko@vanderbilt.edu, mtatar@uh.edu, skoiso@mgh.harvard.edu, Rowan Iskandar <rowan.iskandar@gmail.com>
-Reply-To: Thomas Trikalinos <thomas_trikalinos@brown.edu>
 
-Dear all, 
+Subject: SMDM 2025: Advanced Discrete Event Simulation in R short course - welcome
 
-Thank you for joining the Advanced Discrete Event Simulation in R short course at the 46th SMDM annual meeting in Boston. 
 
-The course will be on Sunday 27 October, 2024. 
-The venue is Room 310, at Boston University, George Sherman Union, 775 Commonwealth Avenue, Boston, MA 02215.
+Thank you for joining the Advanced Discrete Event Simulation in R short course at the 47th SMDM annual meeting in Ann Arbor. 
 
-If you want to follow the exercises in real time, 
+The course will be on Sunday 15 June, 2025. 
+Per the online schedule, we will meet at the Parker room, Michigan Union; Do check the latest info though, through the conference website. Rarely, venues change at the last minute. 
+
+If you want to follow the exercises in real time
 	•	You need R (>=4.0.0), preferably with an IDE such as R Studio.
 	•	Install packages data.table and nhppp (>=1.0.0).  To install them from CRAN, 
 	◦	> install.packages("data.table") 
 	◦	> install.packages("nhppp")
 
-Starting on the morning of 27/10/2024, all materials will be accessible 
-	•	Through this Dropbox link (full link in the PS) through 26/11/2024. Password "smdm_boston", without the quotation marks. 
-	•	At https://github.com/ttrikalin/des-R-course  (download the smdm_2024 release)
+Starting on the morning of 15/06/2025, all materials will be accessible 
+	•	At this Dropbox link (full link in the PS) through 15/07/2025. Password "smdm_ann_arbor", without the quotation marks. 
+	•	At https://github.com/ttrikalin/des-R-course  (download the smdm_ann_arbor_2025 release)
 
 Thanks once more for joining us -- and looking forward to meeting you all. 
 
@@ -35,4 +29,4 @@ Y Sereda, and 
 S Chrysanthopoulou  
 
 
-PS Dropbox link https://www.dropbox.com/scl/fo/5p96rftnv6owjx1mbanit/APcUP8EuNJvnB6n36zQV0wk?rlkey=521hiea67gccmnq15xqfa3bic&st=c75lgsbg&dl=0 
+PS Dropbox link 
