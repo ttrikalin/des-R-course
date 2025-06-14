@@ -1,11 +1,14 @@
-
+From: Thomas Trikalinos <thomas_trikalinos@brown.edu>
 Subject: SMDM 2025: Advanced Discrete Event Simulation in R short course - welcome
+Date: June 14, 2025 at 7:06:43 PM EDT
+To: Thomas Trikalinos <thomas_trikalinos@brown.edu>
+Cc: Fernando Alarid Escudero <falarid@stanford.edu>, "Yuliia, Sereda" <sereda_yuliia@brown.edu>, Stavroula Chrysanthopoulou <stavroula_chrysanthopoulou@brown.edu>
+Bcc: bruno.alvesmaciel@yale.edu, malcolmbarrett@gmail.com, ashley.leech@vanderbilt.edu, mlopezme@stanford.edu, cmellott@umich.edu, mariana.neves@yale.edu, hwu4@uab.edu, xzang@umn.edu, jzhu529@gmail.com, yh3679@cumc.columbia.edu, sjpi@stanford.edu
 
-
-Thank you for joining the Advanced Discrete Event Simulation in R short course at the 47th SMDM annual meeting in Ann Arbor. 
+Thank you for joining the Advanced Discrete Event Simulation in R short course at the 47th SMDM annual meeting in Ann Arbor. 
 
 The course will be on Sunday 15 June, 2025. 
-Per the online schedule, we will meet at the Parker room, Michigan Union; Do check the latest info though, through the conference website. Rarely, venues change at the last minute. 
+Per the online schedule, we will meet at the Parker room, Michigan Union; Do check the latest info though, through the conference website. Rarely, venues change at the last minute. 
 
 If you want to follow the exercises in real time
 	•	You need R (>=4.0.0), preferably with an IDE such as R Studio.
@@ -14,8 +17,8 @@ If you want to follow the exercises in real time
 	◦	> install.packages("nhppp")
 
 Starting on the morning of 15/06/2025, all materials will be accessible 
-	•	At this Dropbox link (full link in the PS) through 15/07/2025. Password "smdm_ann_arbor", without the quotation marks. 
-	•	At https://github.com/ttrikalin/des-R-course  (download the smdm_ann_arbor_2025 release)
+	•	At this Dropbox link (full link in the PS) through 15/07/2025. Password "smdm_ann_arbor", without the quotation marks. 
+	•	At https://github.com/ttrikalin/des-R-course  (download the 2025_smdm_ann_arbor release)
 
 Thanks once more for joining us -- and looking forward to meeting you all. 
 
@@ -29,4 +32,11 @@ Y Sereda, and 
 S Chrysanthopoulou  
 
 
-PS Dropbox link 
+PS Dropbox link: 
+Password Required
+dropbox.com
+
+
+
+
+
