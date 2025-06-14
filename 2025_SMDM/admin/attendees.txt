@@ -1,5 +1,5 @@
 Bruno Alves-Maciel		bruno.alvesmaciel@yale.edu
-Malcolm Barrett		malcolmbarrett@gmail.com
+Malcolm Barrett			malcolmbarrett@gmail.com
 Ashley Leech 			ashley.leech@vanderbilt.edu
 Mauricio Lopez Mendez		mlopezme@stanford.edu
 Claire Mellott			cmellott@umich.edu
@@ -7,4 +7,6 @@ Mariana Neves			mariana.neves@yale.edu
 Hongke	Wu			hwu4@uab.edu
 Xiao Zang			xzang@umn.edu
 Jinyi Zhu			jzhu529@gmail.com
+Yun-Lin Huang 			yh3679@cumc.columbia.edu
+Selina Pi			sjpi@stanford.edu
 
