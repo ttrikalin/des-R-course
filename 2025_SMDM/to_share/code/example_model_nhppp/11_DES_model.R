@@ -1,5 +1,5 @@
 library(data.table)
-source("01_constant_and_common_intensity_functions.R")
+source("01_constant_and_weibull_intensity_functions.R")
 source("02_all_cause_mortality_function.R")
 source("03_toxin_exposure_functions.R")
 source("10_model_class.R")
