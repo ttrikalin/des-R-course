@@ -1,12 +1,9 @@
-Bruno Alves-Maciel		bruno.alvesmaciel@yale.edu
-Malcolm Barrett			malcolmbarrett@gmail.com
-Ashley Leech 			ashley.leech@vanderbilt.edu
-Mauricio Lopez Mendez		mlopezme@stanford.edu
-Claire Mellott			cmellott@umich.edu
-Mariana Neves			mariana.neves@yale.edu
-Hongke	Wu			hwu4@uab.edu
-Xiao Zang			xzang@umn.edu
-Jinyi Zhu			jzhu529@gmail.com
-Yun-Lin Huang 			yh3679@cumc.columbia.edu
-Selina Pi			sjpi@stanford.edu
-
+Mauricio, Melanio	m.mauricio@lumc.nl
+Fu, Jinjing	j.fu01@umcg.nl
+Siekerman, Mies	miessiekerman@hotmail.nl
+Diez, Francisco Javier	fjdiez@dia.uned.es
+Chen, Gang	gang.chen@monash.edu
+Glynn, David	david.p.glynn@universityofgalway.ie
+Yeretzian, Shant Torkom	styeretzian@gmail.com
+Choi, Heejin	choi1102@umn.edu
+Welton, Nicky	nicky.welton@bristol.ac.uk

@@ -1,4 +1,5 @@
 #### The nhppp package syntax for a single person
+library(data.table)
 library(nhppp)
 library(ggplot2)
 

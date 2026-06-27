@@ -1,24 +1,33 @@
-From: Thomas Trikalinos <thomas_trikalinos@brown.edu>
-Subject: SMDM 2025: Advanced Discrete Event Simulation in R short course - welcome
-Date: June 14, 2025 at 7:06:43 PM EDT
+Subject: SMDM 2026: Advanced Discrete Event Simulation in R short course - welcome
 To: Thomas Trikalinos <thomas_trikalinos@brown.edu>
 Cc: Fernando Alarid Escudero <falarid@stanford.edu>, "Yuliia, Sereda" <sereda_yuliia@brown.edu>, Stavroula Chrysanthopoulou <stavroula_chrysanthopoulou@brown.edu>
-Bcc: bruno.alvesmaciel@yale.edu, malcolmbarrett@gmail.com, ashley.leech@vanderbilt.edu, mlopezme@stanford.edu, cmellott@umich.edu, mariana.neves@yale.edu, hwu4@uab.edu, xzang@umn.edu, jzhu529@gmail.com, yh3679@cumc.columbia.edu, sjpi@stanford.edu
+Bcc: m.mauricio@lumc.nl
+j.fu01@umcg.nl
+miessiekerman@hotmail.nl
+fjdiez@dia.uned.es
+gang.chen@monash.edu
+david.p.glynn@universityofgalway.ie
+styeretzian@gmail.com
+choi1102@umn.edu
+nicky.welton@bristol.ac.uk
 
-Thank you for joining the Advanced Discrete Event Simulation in R short course at the 47th SMDM annual meeting in Ann Arbor. 
+Dear all, 
 
-The course will be on Sunday 15 June, 2025. 
-Per the online schedule, we will meet at the Parker room, Michigan Union; Do check the latest info though, through the conference website. Rarely, venues change at the last minute. 
+Thanks for joining the short course on advanced discrete event simulation in R. 
 
-If you want to follow the exercises in real time
-	•	You need R (>=4.0.0), preferably with an IDE such as R Studio.
+The course will be on Sunday 28 June, 2026, at 8:35am. 
+ 
+Per the online schedule, we will meet at the Georg Sverdups hus (GS), in auditorium 2 , first floor; do check the latest info though, through the conference website/app. Rarely, venues change at the last minute. 
+
+If you want to follow the exercises in real time (not necessary) 
+	•	You need R (>=4.0.0), preferably with an IDE such as R Studio/ VSCode or the like.
 	•	Install packages data.table and nhppp (>=1.0.0).  To install them from CRAN, 
 	◦	> install.packages("data.table") 
 	◦	> install.packages("nhppp")
 
-Starting on the morning of 15/06/2025, all materials will be accessible 
-	•	At this Dropbox link (full link in the PS) through 15/07/2025. Password "smdm_ann_arbor", without the quotation marks. 
-	•	At https://github.com/ttrikalin/des-R-course  (download the 2025_smdm_ann_arbor release)
+Starting on the morning of 28/06/2026, all materials will be accessible 
+	•	At this Dropbox link (full link in the PS) through 28/07/2026. Password "smdm_oslo", without the quotation marks. 
+	•	At https://github.com/ttrikalin/des-R-course  (download the 2026_smdm_oslo release)
 
 Thanks once more for joining us -- and looking forward to meeting you all. 
 
@@ -32,9 +41,8 @@ Y Sereda, and 
 S Chrysanthopoulou  
 
 
-PS Dropbox link: 
-Password Required
-dropbox.com
+PS Dropbox link: https://www.dropbox.com/scl/fo/ombfwi88ryugtbq5rmddn/AHpOObwvVP_ziokENkBMMKU?rlkey=bkecbjlletom8gy6i4s7q3bre&st=8q885vv1&dl=0
+
 
 
 
