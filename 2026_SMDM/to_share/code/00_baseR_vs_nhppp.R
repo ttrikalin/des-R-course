@@ -99,7 +99,7 @@ tR <- NA
 counter <- 0
 while (is.na(tR)) {
   tR <- rweibull(n = 1, shape = 7, scale = 150)
-  tR <- if (tR > 20 & tR <= 40) tR else NA
+  tR <- if (tR > 20 & tR <= 21) tR else NA
   counter <- counter + 1
 }
 tR
